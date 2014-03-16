@@ -18,7 +18,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+If you're just working with one calendar, then you can specify the VRBO calendar id in an initializer:
+
+    VRBO.configure do |config|
+      config.calendar_id = 293021
+    end
+
+Then to lookup available dates:
+
+    VRBO::Calendar.find_all_available_dates
+
+This will return an array of dates that are available. To see if your dates are available:
+
+    VRBO::Calendar.available?(Date.today, Date.tomorrow)
+
+You can optionally pass a third param, array of dates, to search by instead of the in memory list.
 
 ## Contributing
 
