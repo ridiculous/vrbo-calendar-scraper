@@ -1,6 +1,7 @@
-# Vrbo
+# VRBO Calendar Scraper
 
-TODO: Write a gem description
+Uses mechanize to scrape a VRBO calendar and return a list of available dates. For instance, the gem can
+scrape this calendar: [http://www.vrbo.com/293021/calendar](http://www.vrbo.com/293021/calendar)
 
 ## Installation
 
