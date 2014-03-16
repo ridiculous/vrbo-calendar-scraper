@@ -1,10 +1,9 @@
-# external libraries
-require 'mechanize'
+require 'date'
 require 'uri'
 require 'net/https'
+require 'mechanize'
 
-# our stuff
-require "vrbo/version"
+require 'vrbo/version'
 require 'vrbo/configuration'
 require 'vrbo/availability'
 require 'vrbo/calendar'
