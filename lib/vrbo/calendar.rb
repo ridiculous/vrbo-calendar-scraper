@@ -23,18 +23,13 @@ module VRBO
 
     def find_all_available_dates
       today = Date.today
-      @available_dates = today.upto(today + 365).map { |date| availability_for(date) }.compact
+      @available_dates = today.upto(today + 365).map { |date| date_if_available(date) }.compact
     end
 
-    def availability_for(date)
+    def date_if_available(date)
       m = date.month.to_s
       days[m] ||= collect_days_for_month(date)
-
-      if days[m].include?(date.day.to_s)
-        date.to_s
-      else
-        nil
-      end
+      date.to_s if days[m].include?(date.day.to_s)
     end
 
     def collect_days_for_month(date)
