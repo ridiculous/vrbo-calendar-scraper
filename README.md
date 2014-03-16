@@ -33,8 +33,8 @@ Then to lookup available dates and see if a date range is available:
     calendar.available?(Date.today, Date.tomorrow)
     #=> true/false
 
-These two methods are also available as class methods. However `available?` will need a array of dates
-as a third param when using class level methods.
+These two methods are also available as class methods, however `available?` will then need an array of dates
+as the third parameter.
 
 ## Contributing
 
