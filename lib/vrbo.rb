@@ -19,4 +19,8 @@ module VRBO
     @config ||= Configuration.new
   end
 
+  def reset_config
+    @config = nil
+  end
+
 end
