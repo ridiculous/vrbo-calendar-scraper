@@ -14,16 +14,16 @@ module VRBO
 
     def available?(arrival, depart, my_dates = nil)
       dates = my_dates || available_dates
-      available = dates.any? # should be true
-      arrival.upto(depart - 1.day).each do |date|
-        available = false if dates.exclude?(date.to_s)
+      available = dates.any?
+      arrival.upto(depart - 1).each do |date|
+        available = false unless dates.include?(date.to_s)
       end
       available
     end
 
     def find_all_available_dates
       today = Date.today
-      @available_dates = today.upto(today + 1.year).map { |date| availability_for(date) }.compact
+      @available_dates = today.upto(today + 365).map { |date| availability_for(date) }.compact
     end
 
     def availability_for(date)
