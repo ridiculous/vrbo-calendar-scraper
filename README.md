@@ -20,19 +20,21 @@ Or install it yourself as:
 
 If you're just working with one calendar, then you can specify the VRBO calendar id in an initializer:
 
+    # config/initializers/vrbo_calendar.rb
+
     VRBO.configure do |config|
       config.calendar_id = 293021
     end
 
-Then to lookup available dates:
+Then to lookup available dates and see if a date range is available:
 
-    VRBO::Calendar.find_all_available_dates
+    calendar = VRBO::Calendar.new
+    calendar.find_all_available_dates
+    calendar.available?(Date.today, Date.tomorrow)
+    #=> true/false
 
-This will return an array of dates that are available. To see if your dates are available:
-
-    VRBO::Calendar.available?(Date.today, Date.tomorrow)
-
-You can optionally pass a third param, array of dates, to search by instead of the in memory list.
+These two methods are also available as class methods. However `available?` will need a array of dates
+as a third param when using class level methods.
 
 ## Contributing
 
