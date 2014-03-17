@@ -26,15 +26,15 @@ module VRBO
       @available_dates = today.upto(today + 365).map { |date| date_if_available(date) }.compact
     end
 
-    alias :find_all_available_dates :find_available_dates
-
-    def calendar_url(protocol = 'http')
+    def url(protocol = 'http')
       if id
         "#{protocol}://www.vrbo.com/#{id}/calendar"
       else
         raise ArgumentError, 'You must provide a calendar id'
       end
     end
+
+    alias :find_all_available_dates :find_available_dates
 
     private
 
@@ -53,7 +53,7 @@ module VRBO
     end
 
     def calendar
-      @calendar ||= agent.get(calendar_url)
+      @calendar ||= agent.get(url)
     end
 
     def agent
@@ -64,6 +64,5 @@ module VRBO
     def table_xpath(date)
       "//b[contains(text(), '#{date.strftime('%B %Y')}')]/following-sibling::table"
     end
-
   end
 end

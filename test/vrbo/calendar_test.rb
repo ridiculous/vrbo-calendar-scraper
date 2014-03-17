@@ -47,14 +47,15 @@ class CalendarTest < MiniTest::Unit::TestCase
   end
 
   def test_passing_calendar_id
-    cal = VRBO::Calendar.new(calendar_id)
-    assert_equal calendar_id, cal.id
-    assert_equal "http://www.vrbo.com/#{calendar_id}/calendar", cal.calendar_url
+    calendar = VRBO::Calendar.new(calendar_id)
+    assert_equal calendar_id, calendar.id
+    assert_equal "http://www.vrbo.com/#{calendar_id}/calendar", calendar.url
+    assert_equal "https://www.vrbo.com/#{calendar_id}/calendar", calendar.url('https')
   end
 
   def test_no_calendar_id_given
     assert_raises ArgumentError do
-      VRBO::Calendar.new.calendar_url
+      VRBO::Calendar.new.url
     end
   end
 
@@ -62,9 +63,9 @@ class CalendarTest < MiniTest::Unit::TestCase
     VRBO.configure do |config|
       config.calendar_id = calendar_id
     end
-    cal = VRBO::Calendar.new
+    calendar = VRBO::Calendar.new
     VRBO.reset_config
-    assert_equal calendar_id, cal.id
-    assert_equal "http://www.vrbo.com/#{calendar_id}/calendar", cal.calendar_url
+    assert_equal calendar_id, calendar.id
+    assert_equal "http://www.vrbo.com/#{calendar_id}/calendar", calendar.url
   end
 end
