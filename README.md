@@ -30,7 +30,7 @@ If you're just working with one calendar, then you can specify the VRBO calendar
 Then to lookup available dates and see if a date range is available:
 
     calendar = VRBO::Calendar.new
-    calendar.find_all_available_dates
+    calendar.find_available_dates
     calendar.available?(Date.today, Date.tomorrow)
     #=> true/false
 

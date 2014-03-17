@@ -21,10 +21,22 @@ module VRBO
       available
     end
 
-    def find_all_available_dates
+    def find_available_dates
       today = Date.today
       @available_dates = today.upto(today + 365).map { |date| date_if_available(date) }.compact
     end
+
+    alias :find_all_available_dates :find_available_dates
+
+    def calendar_url(protocol = 'http')
+      if id
+        "#{protocol}://www.vrbo.com/#{id}/calendar"
+      else
+        raise ArgumentError, 'You must provide a calendar id'
+      end
+    end
+
+    private
 
     def date_if_available(date)
       m = date.month.to_s
@@ -48,17 +60,10 @@ module VRBO
       @agent ||= Mechanize.new
     end
 
-    def calendar_url
-      if id
-        "http://www.vrbo.com/#{id}/calendar"
-      else
-        raise ArgumentError, 'You must provide a calendar id'
-      end
-    end
-
-    # March 2014
+    # e.g. March 2014
     def table_xpath(date)
       "//b[contains(text(), '#{date.strftime('%B %Y')}')]/following-sibling::table"
     end
+
   end
 end
