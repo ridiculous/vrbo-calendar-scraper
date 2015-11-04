@@ -1,21 +1,20 @@
 module VRBO
   class Availability
 
-    attr_accessor :start_at, :duration, :error, :dates
+    attr_reader :start_at, :dates
 
-    # assumes dates are in ascending order
-    def initialize(the_dates = nil)
-      @dates = the_dates || []
-      if dates.any?
-        @start_at = Date.parse(dates.shift)
+    # @param [Array] dates list of date strings
+    def initialize(dates = nil)
+      @dates = Array(dates)
+      if @dates.any?
+        @start_at = Date.parse(@dates.shift)
       else
         @start_at = Date.today
-        @error = 'Maybe... But likely there was an error.'
       end
-      @duration = count_continuous_dates
     end
 
-    def count_continuous_dates
+    # @note assumes @dates are in ascending order
+    def duration
       i = -1
       count = 1
       dates.each do |the_date|

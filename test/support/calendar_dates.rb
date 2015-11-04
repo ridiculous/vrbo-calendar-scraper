@@ -1,12 +1,5 @@
 module CalendarDates
 
-  module Stubs
-    def collect_days_for_month(date)
-      dates = date.upto(date.next_month).to_a
-      dates.map(&:day).map(&:to_s).take(3)
-    end
-  end
-
   def available?(list, a = today, b = tomorrow)
     vrbo_calendar.available?(a, b, list)
   end
@@ -40,6 +33,15 @@ module CalendarDates
   end
 
   def vrbo_calendar
-    @vrbo_calendar ||= VRBO::Calendar.prepend(Stubs).new
+    @vrbo_calendar ||= begin
+      calendar = VRBO::Calendar.new
+
+      def calendar.collect_days_for_month(date)
+        dates = date.upto(date.next_month).to_a
+        dates.map(&:day).map(&:to_s).take(3)
+      end
+
+      calendar
+    end
   end
 end

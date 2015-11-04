@@ -39,11 +39,10 @@ class CalendarTest < MiniTest::Unit::TestCase
   end
 
   def test_find_all_available_dates
-    # 3 days taken for each month (36) + 1 day padding
-    assert_equal 37, vrbo_calendar.find_available_dates.length
+    # 3 days taken for each month (36)
+    assert_equal 36, vrbo_calendar.find_available_dates.length
+    assert_equal 12, vrbo_calendar.days.length
     assert_equal today.to_s, vrbo_calendar.available_dates.first
-    assert_equal (today + 365).to_s, vrbo_calendar.available_dates.last
-    assert_equal vrbo_calendar.days.length, 12
   end
 
   def test_passing_calendar_id
