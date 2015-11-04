@@ -5,37 +5,26 @@ scrape this calendar: [http://www.vrbo.com/293021/calendar](http://www.vrbo.com/
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'vrbo'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install vrbo
 
 ## Usage
 
 If you're just working with one calendar, then you can specify the VRBO calendar id in an initializer:
 
-    # config/initializers/vrbo_calendar.rb
-
-    VRBO.configure do |config|
-      config.calendar_id = 293021
-    end
+```ruby
+# config/initializers/vrbo.rb
+VRBO.configure do |config|
+  config.calendar_id = 293021
+end
+```
 
 Then to lookup available dates and see if a date range is available:
 
-    calendar = VRBO::Calendar.new
-    calendar.find_available_dates
-    calendar.available?(Date.today, Date.tomorrow)
-    #=> true/false
-
-These two methods are also available as class methods, however `available?` will then need an array of dates
-as the third parameter.
+```ruby
+calendar = VRBO::Calendar.new
+calendar.available?(Date.today, Date.today + 5)
+#=> true/false
+```
 
 ## Contributing
 

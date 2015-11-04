@@ -1,19 +1,21 @@
-require 'vrbo/class_methods'
-
 module VRBO
   class Calendar
-    extend ClassMethods
 
-    attr_accessor :id, :available_dates, :days
+    attr_accessor :id, :days
 
     def initialize(calendar_id = nil)
       @id = calendar_id || VRBO.config.calendar_id
       @days = {}
-      @available_dates = []
+      @available_dates = nil
     end
 
-    def available?(arrival, depart, my_dates = nil)
-      dates = my_dates || available_dates
+    def available_dates
+      @available_dates ||= Date.today.upto(Date.today + 365).map { |date| date_if_available(date) }.compact
+    end
+
+    # @description exclusive, drops day from departure because bookings usually go on per nightly
+    def available?(arrival, depart, dates = nil)
+      dates = dates || available_dates
       available = dates.any?
       arrival.upto(depart - 1).each do |date|
         available = false unless dates.include?(date.to_s)
@@ -21,22 +23,17 @@ module VRBO
       available
     end
 
-    def find_available_dates
-      today = Date.today
-      @available_dates = today.upto(today + 365).map { |date| date_if_available(date) }.compact
-    end
-
     def url(protocol = 'http')
       if id
         "#{protocol}://www.vrbo.com/#{id}/calendar"
       else
-        raise ArgumentError, 'You must provide a calendar id'
+        fail ArgumentError, 'calendar_id is required! You can initialize with a calendar_id or configure the module VRBO'
       end
     end
 
-    alias :find_all_available_dates :find_available_dates
-
-    private
+    #
+    # Private
+    #
 
     def date_if_available(date)
       m = date.month.to_s
@@ -45,24 +42,18 @@ module VRBO
     end
 
     def collect_days_for_month(date)
-      scrape_table_for(date).map { |cell| cell.children.to_s.strip }
+      table = calendar.search('.cal-month').at("//b[contains(text(), '#{date.strftime('%B %Y')}')]/following-sibling::table")
+      table.search('td:not(.strike)').map { |cell| cell.children.to_s.strip }
     end
 
-    def scrape_table_for(date)
-      calendar.search('.cal-month').at(table_xpath(date)).search('td:not(.strike)')
-    end
+    # , retries: 10
+    # collect_days_for_month(date, retries: retries - 1) if table.nil? && retries > 0
 
     def calendar
-      @calendar ||= agent.get(url)
-    end
-
-    def agent
-      @agent ||= Mechanize.new
-    end
-
-    # e.g. March 2014
-    def table_xpath(date)
-      "//b[contains(text(), '#{date.strftime('%B %Y')}')]/following-sibling::table"
+      @calendar ||= Mechanize.start do |agent|
+        agent.user_agent_alias = 'Mac Safari'
+        agent.get(url).parser
+      end
     end
   end
 end

@@ -2,14 +2,10 @@ require 'date'
 require 'uri'
 require 'net/https'
 require 'mechanize'
-
 require 'vrbo/version'
-require 'vrbo/configuration'
-require 'vrbo/availability'
-require 'vrbo/calendar'
 
 module VRBO
-  extend self
+  module_function
 
   def configure
     yield config
@@ -23,4 +19,7 @@ module VRBO
     @config = nil
   end
 
+  autoload :Configuration, 'vrbo/configuration'
+  autoload :Availability, 'vrbo/availability'
+  autoload :Calendar, 'vrbo/calendar'
 end
