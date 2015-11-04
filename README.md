@@ -24,6 +24,8 @@ Then to lookup available dates and see if a date range is available:
 calendar = VRBO::Calendar.new
 calendar.available?(Date.today, Date.today + 5)
 #=> true/false
+calendar.available_dates
+#=> ["2015-11-03", "2015-11-04", "2015-11-05", ...]
 ```
 
 ## Contributing

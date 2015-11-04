@@ -44,6 +44,11 @@ module VRBO
     def collect_days_for_month(date)
       table = calendar.search('.cal-month').at("//b[contains(text(), '#{date.strftime('%B %Y')}')]/following-sibling::table")
       table.search('td:not(.strike)').map { |cell| cell.children.to_s.strip }
+    rescue => e
+      puts e.class
+      puts e.message
+      puts e.backtrace
+      puts calendar: calendar
     end
 
     # , retries: 10
@@ -51,6 +56,11 @@ module VRBO
 
     def calendar
       @calendar ||= Mechanize.start do |agent|
+        agent.open_timeout = 10
+        agent.read_timeout = 10
+        agent.follow_meta_refresh = true
+        agent.keep_alive = true
+        agent.max_history = 1
         agent.user_agent_alias = 'Mac Safari'
         agent.get(url).parser
       end
