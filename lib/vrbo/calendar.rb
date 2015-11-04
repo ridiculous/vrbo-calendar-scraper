@@ -55,9 +55,6 @@ module VRBO
       puts calendar: calendar
     end
 
-    # , retries: 10
-    # collect_days_for_month(date, retries: retries - 1) if table.nil? && retries > 0
-
     def calendar
       @calendar ||= Mechanize.start do |agent|
         agent.open_timeout = 10
