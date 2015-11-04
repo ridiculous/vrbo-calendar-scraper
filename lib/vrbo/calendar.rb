@@ -10,7 +10,7 @@ module VRBO
     end
 
     def available_dates
-      @available_dates ||= Date.today.upto(Date.today + 365).map { |date| date_if_available(date) }.compact
+      @available_dates ||= today.upto(today + 365).map { |date| date_if_available(date) }.compact
     end
 
     # @description exclusive, drops day from departure because bookings usually go on per nightly
@@ -34,6 +34,10 @@ module VRBO
     #
     # Private
     #
+
+    def today
+      @today ||= Date.respond_to?(:current) ? Date.current : Date.today
+    end
 
     def date_if_available(date)
       m = date.month.to_s
