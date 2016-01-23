@@ -9,7 +9,7 @@ scrape this calendar: [http://www.vrbo.com/293021/calendar](http://www.vrbo.com/
 
 ## Usage
 
-If you're just working with one calendar, then you can specify the VRBO calendar id in an initializer:
+Specify the VRBO calendar ID in an initializer:
 
 ```ruby
 # config/initializers/vrbo.rb
@@ -18,15 +18,27 @@ VRBO.configure do |config|
 end
 ```
 
-Then to lookup available dates and see if a date range is available:
+Lookup available dates:
 
 ```ruby
 calendar = VRBO::Calendar.new
-calendar.available?(Date.today, Date.today + 5)
-#=> true/false
-calendar.available_dates
-#=> ["2015-11-03", "2015-11-04", "2015-11-05", ...]
+calendar.available_dates #=> ["2015-11-03", "2015-11-04", "2015-11-05", ...]
 ```
+
+Check availability:
+
+```ruby
+calendar.available?(Date.today, Date.today + 5) #=> true/false
+```
+
+### Multiple Calendars
+
+In the case of multiple calendars it makes more sense to skip the initializer part and pass the the calendar ID on
+initialization:
+
+```ruby
+VRBO::Calendar.new 293021
+``
 
 ## Contributing
 

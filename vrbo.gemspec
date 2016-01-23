@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["arebuckley@gmail.com"]
   spec.description   = %q{Scrapes a VRBO calendar using Mechanize and returns available dates}
   spec.summary       = %q{Scrapes a VRBO calendar using Mechanize}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ridiculous/vrbo-calendar-scraper"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
