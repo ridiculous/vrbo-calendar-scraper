@@ -38,7 +38,7 @@ initialization:
 
 ```ruby
 VRBO::Calendar.new 293021
-``
+```
 
 ## Contributing
 
